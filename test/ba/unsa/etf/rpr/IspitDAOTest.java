@@ -1,4 +1,4 @@
-/*package ba.unsa.etf.rpr;
+package ba.unsa.etf.rpr;
 
 import org.junit.jupiter.api.Test;
 
@@ -131,15 +131,15 @@ public class IspitDAOTest {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:baza.db");
             try {
-                PreparedStatement nadmorskaUpit = conn.prepareStatement("SELECT nadmorska_visina FROM grad WHERE id=1");
+                PreparedStatement nadmorskaUpit = conn.prepareStatement("SELECT nadmorskaVisina FROM grad WHERE id=1");
                 nadmorskaUpit.execute();
                 conn.close();
             } catch (SQLException e) {
-                fail("Tabela grad ne sadrži kolonu nadmorska_visina");
+                fail("Tabela grad ne sadrži kolonu nadmorskaVisina");
             }
         } catch (SQLException e) {
             fail("Datoteka sa bazom ne postoji ili je nedostupna");
         }
 
     }
-}*/
+}

@@ -15,6 +15,7 @@ public class GradController {
     public TextField fieldBrojStanovnika;
     public ChoiceBox<Drzava> choiceDrzava;
     public ObservableList<Drzava> listDrzave;
+    public TextField fieldNadmorskaVisina;
     private Grad grad;
 
     public GradController(Grad grad, ArrayList<Drzava> drzave) {
@@ -33,6 +34,7 @@ public class GradController {
             for (Drzava drzava : listDrzave)
                 if (drzava.getId() == grad.getDrzava().getId())
                     choiceDrzava.getSelectionModel().select(drzava);
+                fieldNadmorskaVisina.setText(Integer.toString(grad.getNadmorskaVisina()));
         } else {
             choiceDrzava.getSelectionModel().selectFirst();
         }
@@ -76,12 +78,29 @@ public class GradController {
             fieldBrojStanovnika.getStyleClass().add("poljeIspravno");
         }
 
+        int nadmorska = 0;
+        try {
+            nadmorska = Integer.parseInt(fieldNadmorskaVisina.getText());
+        }catch(Exception e){
+
+        }
+        if(nadmorska <-400 || nadmorska > 8000){
+            sveOk=false;
+            fieldNadmorskaVisina.getStyleClass().removeAll("poljeIspravno");
+            fieldNadmorskaVisina.getStyleClass().add("poljeNijeIspravno");
+        }else{
+            fieldNadmorskaVisina.getStyleClass().removeAll("poljeNijeIspravno");
+            fieldNadmorskaVisina.getStyleClass().add("poljeIspravno");
+        }
+
+
         if (!sveOk) return;
 
         if (grad == null) grad = new Grad();
         grad.setNaziv(fieldNaziv.getText());
         grad.setBrojStanovnika(Integer.parseInt(fieldBrojStanovnika.getText()));
         grad.setDrzava(choiceDrzava.getValue());
+        grad.setNadmorskaVisina(nadmorska);
         Stage stage = (Stage) fieldNaziv.getScene().getWindow();
         stage.close();
     }

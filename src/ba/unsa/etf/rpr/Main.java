@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
+
 public class Main extends Application {
 
     @Override
@@ -18,7 +20,7 @@ public class Main extends Application {
         loader.setController(ctrl);
         Parent root = loader.load();
         primaryStage.setTitle("Gradovi svijeta");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
         primaryStage.show();
     }
 

@@ -4,14 +4,15 @@ CREATE TABLE IF NOT EXISTS `grad` (
 	`naziv`	TEXT,
 	`broj_stanovnika`	INTEGER,
 	`drzava`	INTEGER,
+	`nadmorskaVisina` INTEGER,
 	FOREIGN KEY(`drzava`) REFERENCES `drzava`,
 	PRIMARY KEY(`id`)
 );
-INSERT INTO `grad` VALUES (1,'Pariz',2206488,1);
-INSERT INTO `grad` VALUES (2,'London',8825000,2);
-INSERT INTO `grad` VALUES (3,'Beč',1899055,3);
-INSERT INTO `grad` VALUES (4,'Manchester',545500,2);
-INSERT INTO `grad` VALUES (5,'Graz',280200,3);
+INSERT INTO `grad` VALUES (1,'Pariz',2206488,1,220);
+INSERT INTO `grad` VALUES (2,'London',8825000,2,330);
+INSERT INTO `grad` VALUES (3,'Beč',1899055,3,150);
+INSERT INTO `grad` VALUES (4,'Manchester',545500,2,50);
+INSERT INTO `grad` VALUES (5,'Graz',280200,3,-50);
 CREATE TABLE IF NOT EXISTS `drzava` (
 	`id`	INTEGER,
 	`naziv`	TEXT,

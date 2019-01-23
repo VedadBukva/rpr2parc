@@ -22,15 +22,18 @@ public class GeografijaDAO {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:baza.db");
         } catch (SQLException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
+//            System.out.println("Napravi se baza");
         }
 
         try {
-            glavniGradUpit = conn.prepareStatement("SELECT grad.id, grad.naziv, grad.broj_stanovnika, grad.drzava FROM grad, drzava WHERE grad.drzava=drzava.id AND drzava.naziv=?");
+//            Statement s = conn.createStatement();
+//            s.execute("select nadmorskaVisina from grad");
+            glavniGradUpit = conn.prepareStatement("SELECT grad.id, grad.naziv, grad.broj_stanovnika, grad.drzava, grad.nadmorskaVisina FROM grad, drzava WHERE grad.drzava=drzava.id AND drzava.naziv=?");
         } catch (SQLException e) {
             regenerisiBazu();
             try {
-                glavniGradUpit = conn.prepareStatement("SELECT grad.id, grad.naziv, grad.broj_stanovnika, grad.drzava FROM grad, drzava WHERE grad.drzava=drzava.id AND drzava.naziv=?");
+                glavniGradUpit = conn.prepareStatement("SELECT grad.id, grad.naziv, grad.broj_stanovnika, grad.drzava, grad.nadmorskaVisina FROM grad, drzava WHERE grad.drzava=drzava.id AND drzava.naziv=?");
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -47,12 +50,12 @@ public class GeografijaDAO {
             dajGradoveUpit = conn.prepareStatement("SELECT * FROM grad ORDER BY broj_stanovnika DESC");
             dajDrzaveUpit = conn.prepareStatement("SELECT * FROM drzava ORDER BY naziv");
 
-            dodajGradUpit = conn.prepareStatement("INSERT INTO grad VALUES(?,?,?,?)");
+            dodajGradUpit = conn.prepareStatement("INSERT INTO grad VALUES(?,?,?,?,?)");
             odrediIdGradaUpit = conn.prepareStatement("SELECT MAX(id)+1 FROM grad");
             dodajDrzavuUpit = conn.prepareStatement("INSERT INTO drzava VALUES(?,?,?)");
             odrediIdDrzaveUpit = conn.prepareStatement("SELECT MAX(id)+1 FROM drzava");
 
-            promijeniGradUpit = conn.prepareStatement("UPDATE grad SET naziv=?, broj_stanovnika=?, drzava=? WHERE id=?");
+            promijeniGradUpit = conn.prepareStatement("UPDATE grad SET naziv=?, broj_stanovnika=?, drzava=?, nadmorskaVisina=? WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -109,8 +112,9 @@ public class GeografijaDAO {
     }
 
     private Grad dajGradIzResultSeta(ResultSet rs) throws SQLException {
-        Grad grad = new Grad(rs.getInt(1), rs.getString(2), rs.getInt(3), null);
+        Grad grad = new Grad(rs.getInt(1), rs.getString(2), rs.getInt(3), null, rs.getInt(5));
         grad.setDrzava(dajDrzavu(rs.getInt(4), grad));
+//        System.out.println(rs.getInt(5));
         return grad;
     }
 
@@ -166,6 +170,7 @@ public class GeografijaDAO {
         try {
             ResultSet rs = dajGradoveUpit.executeQuery();
             while (rs.next()) {
+//                System.out.println("gradovi");
                 Grad grad = dajGradIzResultSeta(rs);
                 rezultat.add(grad);
             }
@@ -202,6 +207,7 @@ public class GeografijaDAO {
             dodajGradUpit.setString(2, grad.getNaziv());
             dodajGradUpit.setInt(3, grad.getBrojStanovnika());
             dodajGradUpit.setInt(4, grad.getDrzava().getId());
+            dodajGradUpit.setInt(5,grad.getNadmorskaVisina());
             dodajGradUpit.executeUpdate();
 
         } catch (SQLException e) {
@@ -232,11 +238,15 @@ public class GeografijaDAO {
             promijeniGradUpit.setString(1, grad.getNaziv());
             promijeniGradUpit.setInt(2, grad.getBrojStanovnika());
             promijeniGradUpit.setInt(3, grad.getDrzava().getId());
-            promijeniGradUpit.setInt(4, grad.getId());
+            promijeniGradUpit.setInt(4, grad.getNadmorskaVisina());
+            promijeniGradUpit.setInt(5, grad.getId());
+//            Statement s = conn.createStatement();
+//            s.executeUpdate("UPDATE grad SET naziv=\'"+grad.getNaziv()+"\', broj_stanovnika="+grad.getBrojStanovnika()+", drzava="+grad.getDrzava().getId()+", nadmorskaVisina="+grad.getNadmorskaVisina()+" WHERE id="+grad.getId());
             promijeniGradUpit.executeUpdate();
-
+            System.out.println(grad.getNadmorskaVisina());;
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
